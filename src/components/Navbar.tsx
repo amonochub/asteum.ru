@@ -1,19 +1,28 @@
 import { Button } from '@/components/ui/button'
 import astemLogo from '@/assets/asteum-logo.png'
-import { toast } from '@/hooks/use-toast'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 export const Navbar = () => {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const isHomePage = location.pathname === '/'
+
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id)
-    element?.scrollIntoView({ behavior: 'smooth' })
+    if (!isHomePage) {
+      navigate('/')
+      setTimeout(() => {
+        const element = document.getElementById(id)
+        element?.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+    } else {
+      const element = document.getElementById(id)
+      element?.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   const handleStart = () => {
-    toast({
-      title: 'Начнем!',
-      description: 'Переходим к регистрации',
-    })
+    navigate('/dashboard')
   }
 
   return (
@@ -44,6 +53,12 @@ export const Navbar = () => {
               className='text-sm text-muted-foreground hover:text-foreground transition-colors font-normal'
             >
               Автоматизация
+            </button>
+            <button
+              onClick={() => navigate('/dashboard')}
+              className='text-sm text-muted-foreground hover:text-foreground transition-colors font-normal'
+            >
+              Dashboard
             </button>
             <a
               href='/edu'

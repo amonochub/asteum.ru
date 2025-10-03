@@ -4,7 +4,7 @@ import { Toaster as Sonner } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
-import { IndexLazy, EduLazy, NotFoundLazy } from './App.lazy'
+import { IndexLazy, DashboardLazy, EduLazy, NotFoundLazy } from './App.lazy'
 
 // Loading fallback component with skeleton
 const LoadingFallback = () => (
@@ -42,6 +42,7 @@ const App = () => (
         <Suspense fallback={<LoadingFallback />}>
           <Routes>
             <Route path='/' element={<IndexLazy />} />
+            <Route path='/dashboard' element={<DashboardLazy />} />
             <Route path='/edu' element={<EduLazy />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path='*' element={<NotFoundLazy />} />
