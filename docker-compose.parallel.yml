@@ -1,0 +1,61 @@
+# Docker Compose для параллельного запуска (не конфликтует с существующим сайтом)
+version: "3.9"
+
+services:
+  # Backend API на порту 3001
+  asteum-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: asteum-process-backend
+    ports:
+      - "3001:3000"  # Внешний 3001, внутренний 3000
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+      - DATABASE_PATH=/app/data/asteum.db
+      - CORS_ORIGIN=https://asteum.ru
+      - API_PREFIX=/api/v1
+    volumes:
+      - ./backend/data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
+    networks:
+      - asteum-process-network
+
+  # Frontend на портах 8081 (HTTP) и 8443 (HTTPS)
+  asteum-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+      args:
+        - VITE_APP_ENV=production
+        - VITE_API_URL=https://asteum.ru/api
+    container_name: asteum-process-frontend
+    ports:
+      - "8081:80"    # HTTP на 8081
+      - "8443:443"   # HTTPS на 8443
+    volumes:
+      - ./SSL:/etc/nginx/ssl:ro
+    depends_on:
+      - asteum-backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
+    networks:
+      - asteum-process-network
+
+networks:
+  asteum-process-network:
+    driver: bridge
+

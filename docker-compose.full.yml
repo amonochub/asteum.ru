@@ -1,0 +1,65 @@
+# Docker Compose для полного стека (frontend + backend)
+version: "3.9"
+
+services:
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: asteum-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+      - DATABASE_PATH=/app/data/asteum.db
+      - CORS_ORIGIN=https://asteum.ru
+      - API_PREFIX=/api/v1
+    volumes:
+      # Persist database
+      - ./backend/data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
+    networks:
+      - app-network
+
+  # Frontend + Nginx
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+      args:
+        - VITE_APP_ENV=production
+        - VITE_API_URL=http://backend:3000
+    container_name: asteum-app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # SSL certificates
+      - ./SSL:/etc/nginx/ssl:ro
+      # Nginx config
+      - ./nginx-full.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+

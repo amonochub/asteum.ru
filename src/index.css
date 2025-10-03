@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Apple-inspired minimal design system - Light Mode */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 7%;
+
+    --card: 0 0% 99%;
+    --card-foreground: 0 0% 7%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 7%;
+
+    --primary: 211 100% 50%; /* Apple-style blue */
+    --primary-foreground: 0 0% 100%;
+
+    --primary-glow: 211 100% 65%;
+
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 7%;
+
+    --muted: 0 0% 97%;
+    --muted-foreground: 0 0% 50%;
+
+    --accent: 211 100% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 92%;
+    --input: 0 0% 92%;
+    --ring: 0 0% 7%;
+
+    --radius: 1.25rem;
+
+    /* Apple-style subtle gradients */
+    --gradient-hero: linear-gradient(180deg, hsl(0 0% 100%), hsl(220 20% 98%));
+    --gradient-section: linear-gradient(
+      180deg,
+      hsl(220 20% 98%),
+      hsl(0 0% 100%)
+    );
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 99%), hsl(0 0% 100%));
+    --gradient-glow: radial-gradient(
+      circle at center,
+      hsl(211 100% 50% / 0.03),
+      transparent
+    );
+
+    /* Minimal shadows */
+    --shadow-elegant: 0 8px 30px -10px hsl(0 0% 0% / 0.08);
+    --shadow-glow: 0 0 40px hsl(211 100% 50% / 0.05);
+
+    /* Smooth animations */
+    --transition-smooth: all 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .dark {
+    /* Apple-inspired minimal design system - Dark Mode */
+    --background: 0 0% 7%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 211 100% 50%; /* Apple-style blue */
+    --primary-foreground: 0 0% 100%;
+
+    --primary-glow: 211 100% 65%;
+
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 211 100% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 0 0% 98%;
+
+    /* Dark mode gradients */
+    --gradient-hero: linear-gradient(180deg, hsl(0 0% 7%), hsl(220 15% 10%));
+    --gradient-section: linear-gradient(180deg, hsl(220 15% 10%), hsl(0 0% 7%));
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 10%), hsl(0 0% 7%));
+    --gradient-glow: radial-gradient(
+      circle at center,
+      hsl(211 100% 50% / 0.08),
+      transparent
+    );
+
+    /* Dark mode shadows with glow */
+    --shadow-elegant: 0 8px 30px -10px hsl(0 0% 0% / 0.5);
+    --shadow-glow: 0 0 60px hsl(211 100% 50% / 0.1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground transition-colors duration-300;
+    font-family:
+      -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+      'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  h1 {
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+}
+
+/* Hover effects for cards and interactive elements */
+@layer utilities {
+  .hover-lift {
+    @apply transition-all duration-300 ease-out;
+    position: relative;
+  }
+
+  .hover-lift:hover {
+    top: -0.25rem; /* 4px visual lift without transform (no text blur) */
+    box-shadow: var(--shadow-elegant);
+  }
+
+  .hover-scale {
+    @apply transition-all duration-300 ease-out;
+    position: relative;
+  }
+
+  .hover-scale:hover {
+    top: -0.125rem; /* subtle lift */
+    box-shadow: var(--shadow-elegant);
+  }
+
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+
+  .hover-glow:hover {
+    box-shadow: 0 0 24px hsl(var(--primary-glow) / 0.12);
+  }
+}

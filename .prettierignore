@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+bun.lockb
+
+# Generated files
+*.d.ts
+coverage/
+.env*
+
+# Documentation (preserve formatting)
+LICENSE
+
+# Database files
+*.db
+*.sqlite
+
+# SSL certificates
+*.key
+*.crt
+*.pem
+
+# Logs
+*.log
+
+# OS
+.DS_Store
