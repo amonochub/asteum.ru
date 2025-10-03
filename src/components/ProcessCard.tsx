@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { MoreVertical, Trash2, Play, Pause, Archive } from 'lucide-react'
+import { MoveVertical as MoreVertical, Trash2, Play, Pause, Archive } from 'lucide-react'
 import type { Process } from '@/shared/types/process'
 import { useDeleteProcess, useUpdateProcess } from '@/hooks/use-processes'
 
